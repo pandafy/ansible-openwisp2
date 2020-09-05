@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'openwisp_controller.config',
     'openwisp_controller.geo',
     'openwisp_controller.connection',
+    'flat_json_widget',
 {% if openwisp2_network_topology %}
     'openwisp_network_topology',
 {% endif %}
