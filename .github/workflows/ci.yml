@@ -21,12 +21,6 @@ jobs:
           - ubuntu2004
           - debian10
 
-    env:
-      ROLE_NAME: openwisp2
-      PY_COLORS: '1'
-      ANSIBLE_FORCE_COLOR: '1'
-      MOLECULE_DISTRO: ${{ matrix.distro }}
-
     steps:
     - uses: actions/checkout@v2
       with:
@@ -48,4 +42,10 @@ jobs:
 
     - name: Tests
       run: molecule test
+      env:
+        ROLE_NAME: openwisp2
+        PY_COLORS: '1'
+        ANSIBLE_FORCE_COLOR: '1'
+        MOLECULE_DISTRO: ${{ matrix.distro }}
+
 
