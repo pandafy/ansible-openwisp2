@@ -16,14 +16,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        MOLECULE_DISTRO:
+        distro:
           - ubuntu1804
           - ubuntu2004
           - debian10
 
     env:
       ROLE_NAME: openwisp2
-      MOLECULE_DISTRO: ${{ matrix.MOLECULE_DISTRO }}
+      PY_COLORS: '1'
+      ANSIBLE_FORCE_COLOR: '1'
+      MOLECULE_DISTRO: ${{ matrix.distro }}
 
     steps:
     - uses: actions/checkout@v2
