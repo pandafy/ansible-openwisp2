@@ -1,3 +1,4 @@
+---
 name: OpenWISP CI Build
 
 on:
@@ -10,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.MOLECULE_DISTRO }}
+    name: Build ${{ matrix.distro }}
     runs-on: ubuntu-20.04
 
     strategy:
@@ -22,30 +23,31 @@ jobs:
           - debian10
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install python dependencies
-      run: |
-        pip install molecule[docker] yamllint ansible-lint docker openwisp-utils[qa]
+      - name: Install python dependencies
+        run: |
+          pip install molecule[docker] yamllint ansible-lint docker openwisp-utils[qa]
 
-    - name: QA checks
-      run: |
-        openwisp-qa-check --skip-isort --skip-flake8 --skip-checkmigrations --skip-black
+      - name: QA checks
+        run: |
+          openwisp-qa-check --skip-isort --skip-flake8 --skip-checkmigrations --skip-black
 
+      - name: Tests
+        run: molecule test
+        env:
+          ROLE_NAME: openwisp2
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
 
-    - name: Tests
-      run: molecule test
-      env:
-        ROLE_NAME: openwisp2
-        PY_COLORS: '1'
-        ANSIBLE_FORCE_COLOR: '1'
-        MOLECULE_DISTRO: ${{ matrix.distro }}
-
-
+      - name: Update imports on Ansible Galaxy
+        run: |
+          ansible-galaxy role import --token ${{ secrets.GALAXY_TOKEN }} ${{ github.repository }} ${{ github.repository }}
