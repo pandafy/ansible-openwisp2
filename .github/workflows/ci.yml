@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name:
+    name: Build ${{ matrix.MOLECULE_DISTRO }}
     runs-on: ubuntu-20.04
 
     strategy:
@@ -20,9 +20,10 @@ jobs:
           - ubuntu1804
           - ubuntu2004
           - debian10
-          
+
     env:
       ROLE_NAME: openwisp2
+      MOLECULE_DISTRO: ${{ matrix.MOLECULE_DISTRO }}
 
     steps:
     - uses: actions/checkout@v2
