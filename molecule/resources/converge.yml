@@ -6,6 +6,7 @@
 
   vars:
     openwisp2_network_topology: true
+    openwisp2_controller_pip: "https://github.com/pandafy/openwisp-controller/tarball/fix-tests"
 
   pre_tasks:
     - name: Update apt cache
